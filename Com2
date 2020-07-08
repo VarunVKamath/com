@@ -1,0 +1,179 @@
+
+App.js----------------------- 
+import React from "react";
+import SweetAlert from "react-bootstrap-sweetalert";
+import Sweetalertcomp from "./sweetalertcomp";
+import Button from './buttoncomp';
+import Inputtext from './inputcomp';
+export default class ValidationForm extends React.Component {
+    handleChange = event => {
+        const isCheckbox = event.target.type === "checkbox";
+        this.setState({
+          [event.target.name]: isCheckbox
+            ? event.target.checked
+            : event.target.value
+        });
+      };
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          alert: null
+        };
+      } 
+
+      validate = () => {
+        let emailError = 0;
+        let passwordError = 0;
+    
+        if (this.state.email=="varun@gmail.com") {
+          emailError = 0;
+        }
+
+        else{
+            emailError=1;
+        }
+
+        const Alert =emailError ?(
+            // <SweetAlert warning title="Invalid" onConfirm={() => this.hideAlert()}>
+            //     Check your email!
+            //   </SweetAlert>
+              <Sweetalertcomp title="Invalid" type="warning" onconfirm={()=>{this.hideAlert();}} message="Check Your email" />
+            ):
+            (
+              <Sweetalertcomp title="valid" type="warning" onconfirm={()=>{this.hideAlert();}} message="" />
+                // <SweetAlert warning title="valid" onConfirm={() => this.hideAlert()}>
+                //   </SweetAlert>
+                )
+    
+        if (emailError) {
+          this.setState({ emailError:emailError,alert:Alert});
+          return false;
+        }
+
+        if (this.state.password=="123") {
+            passwordError = 0;
+          }
+  
+          else{
+              passwordError=1;
+          }
+  
+          const Alert2 =passwordError ?(
+              // <SweetAlert warning title="Invalid" onConfirm={() => this.hideAlert()}>
+              //     Check your password!
+              //   </SweetAlert>
+                <Sweetalertcomp title="Invalid" type="warning" onconfirm={()=>{this.hideAlert();}} message="Check your password!" />
+              ):
+              (
+                <Sweetalertcomp title="valid" type="warning"  onconfirm={()=>{this.hideAlert();}} message="" />
+                  )
+      
+          if (passwordError) {
+            this.setState({ passwordError:passwordError,alert:Alert2});
+            return false;
+          }
+
+          const Alert3=<Sweetalertcomp title="Logged in" type="success" onconfirm={()=>{this.hideAlert();}} message="" />
+        
+
+          if (passwordError==0 && emailError==0) {
+            this.setState({ alert:Alert3});
+            return false;
+          }
+    }
+
+    
+      hideAlert() {
+        this.setState({
+          alert: null
+        });
+      }
+  render() {
+    return (
+      <div >
+        <div>
+          
+            <Inputtext name="email" placeholder="email" onChange={(e)=>{this.handleChange(e);}} />
+          <div>
+
+          </div>
+        </div>
+        <div>
+         
+            <Inputtext name="password"  type="password" placeholder="password" onChange={(e)=>{this.handleChange(e);}} />
+          <div>
+            
+          </div>
+        </div>
+
+        <div>
+        {/* <button  onClick= >submit</button> */}
+        <Button onclick={() => this.validate()} />
+        {this.state.alert}
+        </div>
+      </div>
+    );
+  }
+} 
+inputcomp.js---------------------
+import React, { Component } from 'react'
+
+export default class inputcomp extends Component {
+    render() {
+        
+        return (
+            <div>
+                <input
+            type={this.props.type}
+            name={this.props.name}
+            placeholder={this.props.placeholder}
+            onChange={this.props.onChange} />
+          
+            </div>
+        )
+    }
+}
+
+buttoncomp.js-------------------
+import React, { Component } from 'react'
+
+export default class buttoncomp extends Component {
+    render() {
+        return (
+            <div>
+                 <button  onClick={this.props.onclick}>submit</button>
+            </div>
+        )
+    }
+}
+
+sweetalertcomp.js----------------------
+import React, { Component } from 'react'
+import SweetAlert from "react-bootstrap-sweetalert";
+export default class sweetalertcomp extends Component {
+    render() {
+        if(this.props.type=="warning")
+        {
+            return( <SweetAlert warning title={this.props.title} onConfirm={this.props.onconfirm}>
+                {this.props.message}
+              </SweetAlert> );
+        }
+        else
+        {
+            return (
+            
+                
+                     <SweetAlert success title={this.props.title} onConfirm={this.props.onconfirm}>
+                     {this.props.message}
+                     </SweetAlert> 
+        
+            );
+        }
+        
+    }
+}
+
+
+Show quoted text
