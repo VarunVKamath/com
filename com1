@@ -1,0 +1,120 @@
+import React from "react";
+import SweetAlert from "react-bootstrap-sweetalert";
+
+export default class ValidationForm extends React.Component {
+    handleChange = event => {
+        const isCheckbox = event.target.type === "checkbox";
+        this.setState({
+          [event.target.name]: isCheckbox
+            ? event.target.checked
+            : event.target.value
+        });
+      };
+
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          alert: null
+        };
+      } 
+
+      validate = () => {
+        let emailError = 0;
+        let passwordError = 0;
+    
+        if (this.state.email=="varun@gmail.com") {
+          emailError = 0;
+        }
+
+        else{
+            emailError=1;
+        }
+
+        const Alert =emailError ?(
+            <SweetAlert warning title="Invalid" onConfirm={() => this.hideAlert()}>
+                Check your email!
+              </SweetAlert>
+            ):
+            (
+                <SweetAlert warning title="valid" onConfirm={() => this.hideAlert()}>
+                  </SweetAlert>
+                )
+    
+        if (emailError) {
+          this.setState({ emailError:emailError,alert:Alert});
+          return false;
+        }
+
+        if (this.state.password=="123") {
+            passwordError = 0;
+          }
+  
+          else{
+              passwordError=1;
+          }
+  
+          const Alert2 =passwordError ?(
+              <SweetAlert warning title="Invalid" onConfirm={() => this.hideAlert()}>
+                  Check your password!
+                </SweetAlert>
+              ):
+              (
+                  <SweetAlert warning title="valid" onConfirm={() => this.hideAlert()}>
+                    </SweetAlert>
+                  )
+      
+          if (passwordError) {
+            this.setState({ passwordError:passwordError,alert:Alert2});
+            return false;
+          }
+
+          const Alert3=<SweetAlert success title="Logged in" onConfirm={() => this.hideAlert()}>
+        </SweetAlert>
+
+          if (passwordError==0 && emailError==0) {
+            this.setState({ alert:Alert3});
+            return false;
+          }
+    }
+
+    
+      hideAlert() {
+        this.setState({
+          alert: null
+        });
+      }
+  render() {
+    return (
+      <div >
+        <div>
+          <input
+            name="email"
+            placeholder="email"
+            onChange={this.handleChange}/>
+          <div>
+
+          </div>
+        </div>
+        <div>
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            onChange={this.handleChange} />
+          <div>
+            
+          </div>
+        </div>
+
+        <div>
+        <button  onClick={() => this.validate()} >submit</button>
+        {this.state.alert}
+        
+        </div>
+      </div>
+    );
+  }
+}
+
+
